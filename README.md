@@ -92,6 +92,7 @@ export LABEL_STUDIO_BASE_DATA_DIR=$WEATHER_DIR_LABELED export LABEL_STUDIO_LOCAL
 
 ## 5. Label the additional 15 images
 
+<img width="1055" alt="Screen Shot 2022-11-15 at 11 51 03 PM" src="https://user-images.githubusercontent.com/77387431/202120388-f99acc21-b97c-46d0-8d2a-4f05975dad8a.png">
 
 
 ## 6. Train a model on the new labels
