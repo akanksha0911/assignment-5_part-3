@@ -1,6 +1,6 @@
-## Tutorial
-This tutorial combines [Lightly](https://www.lightly.ai) and [LabelStudio](https://labelstud.io) 
-for showing a complete workflow of creating a machine learning model including Active Learning.
+## 
+This assignment combines [Lightly](https://www.lightly.ai) and [LabelStudio](https://labelstud.io) 
+for showing a complete workflow of creating a machine learning model including Active Learning on image task.
 1. It starts with collecting unlabelled data. 
 2. Then it uses Lightly to choose a subset of the unlabelled to be labelled.
 3. This subset is labelled with the help of LabelStudio.
@@ -10,26 +10,12 @@ for showing a complete workflow of creating a machine learning model including A
 7. Finally, the model is used to predict on completely new data. 
 
 
-## 0. Installation and Requirements
-Make sure you have an account for the [Lightly Web App](https://app.lightly.ai). 
-You also need to know your API token which is shown under your `USERNAME` -> `Preferences`.
+## 0. Database and subsampling setup on Lightly and Labels setup on lebel studio:
 
-Clone this repo and cd into it.
-Install all python package requirements in the `requirements.txt` file, e.g. with pip.
-```bash
-git clone https://github.com/lightly-ai/Lightly_LabelStudio_AL.git
-cd Lightly_LabelStudio_AL
-pip install -r requirements.txt
-```
-
-
-## 1. Download the images
+Dataset:
 We want to train a classifier predicting whether a webcam targeting a mountain is showing sunny, cloudy, or very cloudy weather.
 To gather our dataset, we use the webcam at Jungfraujoch targeting the mountain Jungfrau in Switzerland.
-If you want to see the beauty of the swiss alps in full resolution, go to https://www.switch.ch/cam/jungfraujoch/.
 
-First, we decide in which directory we want to save the dataset and export the path to it as environment variable.
-Then we download the images from the webcam hoster using a simple python script.
 It downloads the webcam image at 13:00 for every day in 2020. 
 These 365 images are downloaded at a medium but sufficient resolution with a total size of 28 MB.
 If some URLs are down the images are skipped but the tutorial works nonetheless.
@@ -46,29 +32,13 @@ python source/1_scrape_junfraujoch.py
 ## 2. Analyze and subsample the dataset
 
 First, let's analyze the dataset and its distribution of data using the Lightly webapp.
-You only need to use the `lightly-magic` command posted in the last step and
-put in your token from the [Lightly Web App](https://app.lightly.ai). 
-After logging, the webapp shows your API token under your `USERNAME` -> `Preferences`.
 
-The `lighty-magic` will also create embeddings, which are later used for sampling diverse subsets of the dataset.
-Furthermore, it will upload the images and embeddings to the Lightly Platform.
-
----
-**NOTE**
-
-If you want to train an embedding model on this dataset instead of relying on a pretrained model, 
-set the `trainer.max_epochs` to a higher value, e.g. 100.
-However, we strongly recommend doing this only when having a CUDA-GPU available.
-
----
-
-![Terminal output of lightly-magic command.](tutorial/images/jungfrau_lightly_magic.jpg)
 
 In the Lightly Webapp head to the `Embedding` view and choose the UMAP embeddings.
 It is clearly visible, that there is one distinct cluster.
 Inspecting it shows that these images are mostly showing very cloudy weather.
 
-![Embedding view of the dataset.](tutorial/images/jungfrau_embedding_view.png)
+Embedding view of the dataset
 
 We want to train our classifier without needing to label all 365 images. E.g. we don't want to label very similar images.
 Furthermore, we want to ensure that all areas of the sample space are covered.
