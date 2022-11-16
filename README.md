@@ -96,5 +96,7 @@ export LABEL_STUDIO_BASE_DATA_DIR=$WEATHER_DIR_LABELED export LABEL_STUDIO_LOCAL
 
 
 ## 6. Train a model on the new labels
+<img width="1725" alt="Screen Shot 2022-11-16 at 12 01 16 AM" src="https://user-images.githubusercontent.com/77387431/202121780-51a07002-09c0-4b8e-950a-465a7279cd3b.png">
 
 ## 7. Apply the model on new images
+<img width="1702" alt="Screen Shot 2022-11-16 at 12 01 54 AM" src="https://user-images.githubusercontent.com/77387431/202121866-3579dcd2-a9ec-4b6d-99e9-e0ee17527f76.png">
