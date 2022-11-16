@@ -1,0 +1,282 @@
+hydra:
+  run:
+    dir: lightly_outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  sweep:
+    dir: multirun/${now:%Y-%m-%d}/${now:%H-%M-%S}
+    subdir: ${hydra.job.num}
+  launcher:
+    _target_: hydra._internal.core_plugins.basic_launcher.BasicLauncher
+  sweeper:
+    _target_: hydra._internal.core_plugins.basic_sweeper.BasicSweeper
+    max_batch_size: null
+    params: null
+  help:
+    app_name: ${hydra.job.name}
+    header: '== Description ==
+
+      The lightly Python package is a command-line tool for self-supervised learning.
+
+      '
+    footer: '== Examples ==
+
+
+      Use a pre-trained resnet-18 to embed your images
+
+      > lightly-embed input=''path/to/image/folder'' collate.input_size=224
+
+
+      Load a model from a custom checkpoint to embed your images
+
+      > lightly-embed input_dir=''path/to/image/folder'' collate.input_size=224 checkpoint=''path/to/checkpoint.ckpt''
+
+
+      Train a self-supervised model on your image dataset from scratch
+
+      > lightly-train input_dir=''path/to/image/folder'' loader.batch_size=128 collate.input_size=224
+      pre_trained=False
+
+
+      Train a self-supervised model starting from the pre-trained checkpoint
+
+      > lightly-train input_dir=''path/to/image/folder'' loader.batch_size=128 collate.input_size=224
+
+
+      Train a self-supervised model starting from a custom checkpoint
+
+      > lightly-train input_dir=''path/to/image/folder'' loader.batch_size=128 collate.input_size=224
+      checkpoint=''path/to/checkpoint.ckpt''
+
+
+      Train using half-precision
+
+      > lightly-train input_dir=''path/to/image/folder'' trainer.precision=16
+
+
+      Upload thumbnails to the Lightly Platform
+
+      > lightly-upload input_dir=''path/to/image/folder'' dataset_id=''your_dataset_id''
+      token=''your_access_token''
+
+
+      Upload only metadata of the images to the Lightly Platform
+
+      > lightly-upload input_dir=''path/to/image/folder'' dataset_id=''your_dataset_id''
+      token=''your_access_token upload=''metadata''
+
+
+      Upload full images to the Lightly Platform
+
+      > lightly-upload input_dir=''path/to/image/folder'' dataset_id=''your_dataset_id''
+      token=''your_access_token'' upload=''full''
+
+
+      Upload images and embeddings to the Lightly Platform
+
+      > lightly-upload input_dir=''path/to/image/folder'' embeddings=''path/to/embeddings.csv''
+      dataset_id=''your_dataset_id'' token=''your_access_token''
+
+
+      Upload embeddings to the Lightly Platform
+
+      > lightly-upload embeddings=''path/to/embeddings.csv'' dataset_id=''your_dataset_id''
+      token=''your_access_token''
+
+
+      Upload custom metadata to the Lightly Platform
+
+      > lightly-upload input_dir=''path/to/image/folder'' custom_metadata=''path/to/custom_metadata.json''
+      dataset_id=''your_dataset_id'' token=''your_access_token''
+
+
+      Download a list of files in a given tag from the Lightly Platform
+
+      > lightly-download tag_name=''my-tag'' dataset_id=''your_dataset_id'' token=''your_access_token''
+
+
+      Download a list of files in a given tag without filenames from the parent tag
+      from the Lightly Platform
+
+      > lightly-download tag_name=''my-tag'' dataset_id=''your_dataset_id'' token=''your_access_token''
+      exclude_parent_tag=True
+
+
+      Copy all files in a given tag from a source directory to a target directory
+
+      > lightly-download tag_name=''my-tag'' dataset_id=''your_dataset_id'' token=''your_access_token''
+      input_dir=''data/'' output_dir=''new_data/''
+
+
+      Train, embed, and upload images to a new dataset on the Lightly Platform
+
+      > lightly-magic input_dir=''path/to/image/folder'' new_dataset_name=''your_dataset_name''
+      token=''your_access_token''
+
+
+      Train, embed, and upload images to an existing dataset on the Lightly Platform
+
+      > lightly-magic input_dir=''path/to/image/folder'' dataset_id=''your_dataset_id''
+      token=''your_access_token''
+
+
+      Embed and upload images to a new dataset on the Lightly Platform
+
+      > lightly-magic input_dir=''path/to/image/folder'' trainer.max_epochs=0 new_dataset_name=''your_dataset_name''
+      token=''your_access_token''
+
+
+      Train, embed, and upload images with custom metadata to a new dataset on the
+      Lightly Platform
+
+      > lightly-magic input_dir=''path/to/image/folder'' new_dataset_name=''your_dataset_name''
+      custom_metadata=''path/to/custom_metadata.json'' token=''your_access_token''
+
+
+      == Additional Information ==
+
+
+      Use self-supervised methods to understand and filter raw image data:
+
+
+      Website: https://www.lightly.ai
+
+      Documentation: https://docs.lightly.ai/getting_started/command_line_tool.html
+
+      '
+    template: '${hydra.help.header}
+
+      == Configuration groups ==
+
+      Compose your configuration from those groups (group=option)
+
+
+      $APP_CONFIG_GROUPS
+
+
+      == Config ==
+
+      Override anything in the config (foo.bar=value)
+
+
+      $CONFIG
+
+
+      ${hydra.help.footer}
+
+      '
+  hydra_help:
+    template: 'Hydra (${hydra.runtime.version})
+
+      See https://hydra.cc for more info.
+
+
+      == Flags ==
+
+      $FLAGS_HELP
+
+
+      == Configuration groups ==
+
+      Compose your configuration from those groups (For example, append hydra/job_logging=disabled
+      to command line)
+
+
+      $HYDRA_CONFIG_GROUPS
+
+
+      Use ''--cfg hydra'' to Show the Hydra config.
+
+      '
+    hydra_help: ???
+  hydra_logging:
+    version: 1
+    formatters:
+      simple:
+        format: '[%(asctime)s][HYDRA] %(message)s'
+    handlers:
+      console:
+        class: logging.StreamHandler
+        formatter: simple
+        stream: ext://sys.stdout
+    root:
+      level: INFO
+      handlers:
+      - console
+    loggers:
+      logging_example:
+        level: DEBUG
+    disable_existing_loggers: false
+  job_logging:
+    version: 1
+    formatters:
+      simple:
+        format: '[%(asctime)s][%(name)s][%(levelname)s] - %(message)s'
+    handlers:
+      console:
+        class: logging.StreamHandler
+        formatter: simple
+        stream: ext://sys.stdout
+      file:
+        class: logging.FileHandler
+        formatter: simple
+        filename: ${hydra.runtime.output_dir}/${hydra.job.name}.log
+    root:
+      level: INFO
+      handlers:
+      - console
+      - file
+    disable_existing_loggers: false
+  env: {}
+  mode: RUN
+  searchpath: []
+  callbacks: {}
+  output_subdir: .hydra
+  overrides:
+    hydra:
+    - hydra.mode=RUN
+    task:
+    - token=9c33f696ce0cc1c2d0ab268254904105ae3669a2d75cdfa1
+    - dataset_id=63702c83c916083bd3da8f44
+    - tag_name=Coreset_30
+    - output_dir=path_to_output_folder
+    - input_dir=./dataset/weather_raw
+    - output_dir=
+  job:
+    name: download_cli
+    chdir: null
+    override_dirname: dataset_id=63702c83c916083bd3da8f44,input_dir=./dataset/weather_raw,output_dir=,output_dir=path_to_output_folder,tag_name=Coreset_30,token=9c33f696ce0cc1c2d0ab268254904105ae3669a2d75cdfa1
+    id: ???
+    num: ???
+    config_name: config
+    env_set: {}
+    env_copy: []
+    config:
+      override_dirname:
+        kv_sep: '='
+        item_sep: ','
+        exclude_keys: []
+  runtime:
+    version: 1.2.0
+    version_base: '1.1'
+    cwd: /Users/akanksha/Assignment5/Lightly_LabelStudio_AL
+    config_sources:
+    - path: hydra.conf
+      schema: pkg
+      provider: hydra
+    - path: lightly.cli.config
+      schema: pkg
+      provider: main
+    - path: ''
+      schema: structured
+      provider: schema
+    output_dir: /Users/akanksha/Assignment5/Lightly_LabelStudio_AL/lightly_outputs/2022-11-12/19-01-51
+    choices:
+      hydra/env: default
+      hydra/callbacks: null
+      hydra/job_logging: default
+      hydra/hydra_logging: default
+      hydra/hydra_help: default
+      hydra/help: default
+      hydra/sweeper: basic
+      hydra/launcher: basic
+      hydra/output: default
+  verbose: false

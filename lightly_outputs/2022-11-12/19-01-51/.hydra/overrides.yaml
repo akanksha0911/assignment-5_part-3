@@ -1,0 +1,6 @@
+- token=9c33f696ce0cc1c2d0ab268254904105ae3669a2d75cdfa1
+- dataset_id=63702c83c916083bd3da8f44
+- tag_name=Coreset_30
+- output_dir=path_to_output_folder
+- input_dir=./dataset/weather_raw
+- output_dir=

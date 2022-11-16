@@ -1,0 +1,66 @@
+input_dir: ''
+output_dir: ''
+embeddings: ''
+checkpoint: ''
+label_dir: ''
+label_names_file: ''
+custom_metadata: ''
+token: ''
+dataset_id: ''
+new_dataset_name: ''
+upload: full
+append: false
+resize: -1
+embedding_name: default
+emb_upload_bsz: 32
+tag_name: initial-tag
+exclude_parent_tag: false
+pre_trained: true
+crop_padding: 0.1
+model:
+  name: resnet-18
+  out_dim: 128
+  num_ftrs: 32
+  width: 1
+criterion:
+  temperature: 0.5
+  memory_bank_size: 0
+optimizer:
+  lr: 1.0
+  weight_decay: 1.0e-05
+collate:
+  input_size: 64
+  cj_prob: 0.8
+  cj_bright: 0.7
+  cj_contrast: 0.7
+  cj_sat: 0.7
+  cj_hue: 0.2
+  min_scale: 0.15
+  random_gray_scale: 0.2
+  gaussian_blur: 0.5
+  kernel_size: 0.1
+  vf_prob: 0.0
+  hf_prob: 0.5
+  rr_prob: 0.0
+loader:
+  batch_size: 16
+  shuffle: true
+  num_workers: -1
+  drop_last: true
+trainer:
+  gpus: 1
+  max_epochs: 100
+  precision: 32
+  enable_model_summary: true
+  weights_summary: null
+checkpoint_callback:
+  save_last: true
+  save_top_k: 1
+  dirpath: null
+summary_callback:
+  max_depth: 1
+environment_variable_names:
+  lightly_last_checkpoint_path: LIGHTLY_LAST_CHECKPOINT_PATH
+  lightly_last_embedding_path: LIGHTLY_LAST_EMBEDDING_PATH
+  lightly_last_dataset_id: LIGHTLY_LAST_DATASET_ID
+seed: 1
